@@ -1,5 +1,5 @@
 <template>
-  <VForm ref="clientForm" class="client-form ma-10">
+  <VForm ref="clientForm" v-model="state.isFormValid" class="client-form ma-10">
     <VRow justify="center" align="center">
       <VCard class="client-form__card pa-6" :loading="state.loading">
         <VRow>
@@ -225,7 +225,13 @@
         </VRow>
         <VCardActions>
           <VSpacer />
-          <VBtn color="primary"> Сохранить </VBtn>
+          <VBtn
+            color="primary"
+            :disabled="!state.isFormValid"
+            @click="handleClientUpdating"
+          >
+            Сохранить
+          </VBtn>
         </VCardActions>
       </VCard>
     </VRow>
@@ -246,6 +252,7 @@ export default defineComponent({
       updateFieldForClient,
       updateBirthdayField,
       updateIssueDateField,
+      handleClientUpdating,
     } = useClientForm();
 
     return {
@@ -256,6 +263,7 @@ export default defineComponent({
       updateFieldForClient,
       updateBirthdayField,
       updateIssueDateField,
+      handleClientUpdating,
     };
   },
 });

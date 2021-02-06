@@ -13,6 +13,7 @@ interface State {
   isBirtdayMenuOpen: boolean;
   isIssueDateOpen: boolean;
   isClientFieldsChanged: boolean;
+  isFormValid: boolean;
 }
 
 export const useClientForm = () => {
@@ -21,6 +22,7 @@ export const useClientForm = () => {
     isIssueDateOpen: false,
     loading: false,
     isClientFieldsChanged: false,
+    isFormValid: true,
   });
   const clientForm: Ref<any> = ref(null);
   const { formatDateSimple } = useFormatter();
@@ -55,6 +57,10 @@ export const useClientForm = () => {
     UPDATE_CLIENT_FIELD({ field: "issueDate", value });
   };
 
+  const handleClientUpdating = () => {
+    console.log("22222");
+  };
+
   return {
     state,
     client,
@@ -63,5 +69,6 @@ export const useClientForm = () => {
     updateFieldForClient,
     updateBirthdayField,
     updateIssueDateField,
+    handleClientUpdating,
   };
 };

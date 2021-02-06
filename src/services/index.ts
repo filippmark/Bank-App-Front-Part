@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 
-export type Nullable = undefined | null;
+export const baseUrl = "http://localhost:3000/";
 
 export interface AxiosResponse<T> {
   status?: number;

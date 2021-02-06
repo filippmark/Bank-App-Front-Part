@@ -27,9 +27,10 @@ export interface Client {
   isPensioner: boolean;
   isLiableForMilitary: boolean;
   monthlyIncome: number;
-  citizenship: number | Nullable;
-  disability: number | Nullable;
-  regTown: number | Nullable;
-  actualTown: number | Nullable;
+  citizenshipId: number | Nullable;
+  disabilityId: number | Nullable;
+  regTownId: number | Nullable;
+  actualTownId: number | Nullable;
+  maritalStatusId: number | Nullable;
   [key: string]: string | number | Nullable | boolean;
 }
