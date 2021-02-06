@@ -1,3 +1,4 @@
+import { Client } from "@/types/client";
 import { Nullable } from "@/types/global";
 import { MutationTree } from "vuex";
 import { Mutations, State, States } from "./types";
@@ -10,6 +11,9 @@ const mutations: MutationTree<State> = {
     const { field, value } = newValue;
     state[States.client][field] = value;
   },
+  [Mutations.CLEAR_CLIENT]: (state: State, clearClient: Client) => {
+    state[States.client] = clearClient;
+  }
 };
 
 export default mutations;

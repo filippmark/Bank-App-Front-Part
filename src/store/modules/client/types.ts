@@ -10,4 +10,5 @@ export interface State {
 
 export enum Mutations {
   UPDATE_CLIENT_FIELD = "UPDATE_CLIENT_FIELD",
+  CLEAR_CLIENT = "CLEAR_CLIENT",
 }
