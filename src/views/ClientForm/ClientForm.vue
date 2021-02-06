@@ -4,15 +4,24 @@
       <VCard class="client-form__card pa-6" :loading="state.loading">
         <VRow>
           <VCol cols="12" md="4">
-            <VTextField v-model="client.name" label="Имя"></VTextField>
-          </VCol>
-          <VCol cols="12" md="4">
-            <VTextField v-model="client.surname" label="Фамилия"></VTextField>
+            <VTextField
+              :value="client.name"
+              label="Имя"
+              @input="updateFieldForClient('name', $event)"
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.middleName"
+              :value="client.surname"
+              label="Фамилия"
+              @input="updateFieldForClient('surname', $event)"
+            ></VTextField>
+          </VCol>
+          <VCol cols="12" md="4">
+            <VTextField
+              :value="client.middleName"
               label="Отчество"
+              @input="updateFieldForClient('middleName', $event)"
             ></VTextField>
           </VCol>
         </VRow>
@@ -23,6 +32,7 @@
               :close-on-content-click="false"
               transition="scale-transition"
               offset-y
+              max-width="290px"
             >
               <template v-slot:activator="{ on }">
                 <VTextField
@@ -34,37 +44,44 @@
                 ></VTextField>
               </template>
               <VDatePicker
-                v-model="client.birthDate"
+                :value="client.birthDate"
                 :first-day-of-week="1"
                 locale="de-de"
                 color="primary"
                 no-title
-                @input="state.isBirtdayMenuOpen = false"
+                @input="updateBirthdayField($event)"
               />
             </VMenu>
           </VCol>
           <VCol cols="12" md="4">
             <VCheckbox
-              v-model="client.sex"
+              :value="client.sex"
               :label="`Пол: ${client.sex ? 'мужской' : 'женский'}`"
+              @change="updateFieldForClient('sex', $event)"
             ></VCheckbox>
           </VCol>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.passportSeries"
+              :value="client.passportSeries"
               label="Серия паспорта"
+              @input="updateFieldForClient('passportSeries', $event)"
             ></VTextField>
           </VCol>
         </VRow>
         <VRow>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.passportId"
+              :value="client.passportId"
               label="№ паспорта"
+              @input="updateFieldForClient('passportId', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="client.issuer" label="Кем выдан"></VTextField>
+            <VTextField
+              :value="client.issuer"
+              label="Кем выдан"
+              @input="updateFieldForClient('issuer', $event)"
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VMenu
@@ -72,6 +89,7 @@
               :close-on-content-click="false"
               transition="scale-transition"
               offset-y
+              max-width="290px"
             >
               <template v-slot:activator="{ on }">
                 <VTextField
@@ -83,12 +101,12 @@
                 ></VTextField>
               </template>
               <VDatePicker
-                v-model="client.issueDate"
+                :value="client.issueDate"
                 :first-day-of-week="1"
                 locale="de-de"
                 color="primary"
                 no-title
-                @input="state.isIssueDateOpen = false"
+                @input="updateIssueDateField($event)"
               />
             </VMenu>
           </VCol>
@@ -96,14 +114,16 @@
         <VRow>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.passportId"
+              :value="client.passportId"
               label="Идент. номер"
+              @input="updateFieldForClient('passportId', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.placeOfBirth"
+              :value="client.placeOfBirth"
               label="Место рождения"
+              @input="updateFieldForClient('placeOfBirth', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
@@ -113,37 +133,46 @@
         <VRow>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.placeOfResidence"
+              :value="client.placeOfResidence"
               label="Адрес факт. проживания"
+              @input="updateFieldForClient('placeOfResidence', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.homePhone"
+              :value="client.homePhone"
               label="Телефон дом."
+              @input="updateFieldForClient('homePhone', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.mobilePhone"
+              :value="client.mobilePhone"
               label="Телефон моб."
+              @input="updateFieldForClient('mobilePhone', $event)"
             ></VTextField>
           </VCol>
         </VRow>
         <VRow>
           <VCol cols="12" md="4">
-            <VTextField v-model="client.email" label="E-mail"></VTextField>
-          </VCol>
-          <VCol cols="12" md="4">
             <VTextField
-              v-model="client.placeOfWork"
-              label="Место работы"
+              :value="client.email"
+              label="E-mail"
+              @input="updateFieldForClient('email', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.position"
+              :value="client.placeOfWork"
+              label="Место работы"
+              @input="updateFieldForClient('placeOfWork', $event)"
+            ></VTextField>
+          </VCol>
+          <VCol cols="12" md="4">
+            <VTextField
+              :value="client.position"
               label="Должность"
+              @input="updateFieldForClient('position', $event)"
             ></VTextField>
           </VCol>
         </VRow>
@@ -153,8 +182,9 @@
           </VCol>
           <VCol cols="12" md="4">
             <VTextField
-              v-model="client.livingAddress"
+              :value="client.livingAddress"
               label="Адрес прописки"
+              @input="updateFieldForClient('livingAddress', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
@@ -169,15 +199,28 @@
             <VAutocomplete label="Инвалидность"></VAutocomplete>
           </VCol>
           <VCol cols="12" md="4">
-            <VCheckbox label="Пенсионер"></VCheckbox>
+            <VCheckbox
+              :value="client.isPensioner"
+              label="Пенсионер"
+              @change="updateFieldForClient('isPensioner', $event)"
+            ></VCheckbox>
           </VCol>
         </VRow>
         <VRow>
           <VCol cols="12" md="4">
-            <v-currency-field label="Ежемесячный доход" suffix="BYN" />
+            <v-currency-field
+              :value="client.monthlyIncome"
+              label="Ежемесячный доход"
+              suffix="BYN"
+              @input="updateFieldForClient('monthlyIncome', $event)"
+            />
           </VCol>
           <VCol cols="12" md="4">
-            <VCheckbox label="Военнообязанный"></VCheckbox>
+            <VCheckbox
+              :value="client.isLiableForMilitary"
+              label="Военнообязанный"
+              @change="updateFieldForClient('isLiableForMilitary', $event)"
+            ></VCheckbox>
           </VCol>
         </VRow>
         <VCardActions>
@@ -195,13 +238,24 @@ import { useClientForm } from "./ClientForm";
 
 export default defineComponent({
   setup() {
-    const { state, clientForm, formatDateSimple, client } = useClientForm();
+    const {
+      state,
+      clientForm,
+      formatDateSimple,
+      client,
+      updateFieldForClient,
+      updateBirthdayField,
+      updateIssueDateField,
+    } = useClientForm();
 
     return {
       state,
       clientForm,
       formatDateSimple,
       client,
+      updateFieldForClient,
+      updateBirthdayField,
+      updateIssueDateField,
     };
   },
 });
@@ -211,6 +265,14 @@ export default defineComponent({
 .client-form {
   &__card {
     width: 60%;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .client-form {
+    &__card {
+      width: 90%;
+    }
   }
 }
 </style>
