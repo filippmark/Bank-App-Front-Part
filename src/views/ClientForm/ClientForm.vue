@@ -1,16 +1,19 @@
 <template>
-  <VForm class="client-form ma-10">
+  <VForm ref="clientForm" class="client-form ma-10">
     <VRow justify="center" align="center">
-      <VCard class="client-form__card pa-6" :loading='state.loading'>
+      <VCard class="client-form__card pa-6" :loading="state.loading">
         <VRow>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.name" label="Имя"></VTextField>
+            <VTextField v-model="client.name" label="Имя"></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.surname" label="Фамилия"></VTextField>
+            <VTextField v-model="client.surname" label="Фамилия"></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.middleName" label="Отчество"></VTextField>
+            <VTextField
+              v-model="client.middleName"
+              label="Отчество"
+            ></VTextField>
           </VCol>
         </VRow>
         <VRow>
@@ -23,6 +26,7 @@
             >
               <template v-slot:activator="{ on }">
                 <VTextField
+                  :value="formatDateSimple(client.birthDate)"
                   label="Дата рождения"
                   append-icon="mdi-calendar"
                   readonly
@@ -30,28 +34,37 @@
                 ></VTextField>
               </template>
               <VDatePicker
-                v-model="state.client.birthDate"
+                v-model="client.birthDate"
                 :first-day-of-week="1"
                 locale="de-de"
                 color="primary"
                 no-title
-                @input="state.client.isBirtdayMenuOpen = false"
+                @input="state.isBirtdayMenuOpen = false"
               />
             </VMenu>
           </VCol>
           <VCol cols="12" md="4">
-            <VCheckbox v-model="state.client.sex" :label="`Пол: ${state.client.sex ? 'мужской': 'женский'}`"></VCheckbox>
+            <VCheckbox
+              v-model="client.sex"
+              :label="`Пол: ${client.sex ? 'мужской' : 'женский'}`"
+            ></VCheckbox>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.passportSeries" label="Серия паспорта"></VTextField>
+            <VTextField
+              v-model="client.passportSeries"
+              label="Серия паспорта"
+            ></VTextField>
           </VCol>
         </VRow>
         <VRow>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.passportId" label="№ паспорта"></VTextField>
+            <VTextField
+              v-model="client.passportId"
+              label="№ паспорта"
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.issuer" label="Кем выдан"></VTextField>
+            <VTextField v-model="client.issuer" label="Кем выдан"></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VMenu
@@ -62,6 +75,7 @@
             >
               <template v-slot:activator="{ on }">
                 <VTextField
+                  :value="formatDateSimple(client.issueDate)"
                   label="Дата выдачи"
                   append-icon="mdi-calendar"
                   readonly
@@ -69,22 +83,28 @@
                 ></VTextField>
               </template>
               <VDatePicker
-                v-model="state.client.issueDate"
+                v-model="client.issueDate"
                 :first-day-of-week="1"
                 locale="de-de"
                 color="primary"
                 no-title
-                @input="state.client.isIssueDateOpen = false"
+                @input="state.isIssueDateOpen = false"
               />
             </VMenu>
           </VCol>
         </VRow>
         <VRow>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.passportId" label="Идент. номер"></VTextField>
+            <VTextField
+              v-model="client.passportId"
+              label="Идент. номер"
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.placeOfBirth" label="Место рождения"></VTextField>
+            <VTextField
+              v-model="client.placeOfBirth"
+              label="Место рождения"
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VAutocomplete label="Город факт. проживания"></VAutocomplete>
@@ -92,24 +112,39 @@
         </VRow>
         <VRow>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.placeOfResidence" label="Адрес факт. проживания"></VTextField>
+            <VTextField
+              v-model="client.placeOfResidence"
+              label="Адрес факт. проживания"
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.homePhone" label="Телефон дом."></VTextField>
+            <VTextField
+              v-model="client.homePhone"
+              label="Телефон дом."
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.mobilePhone" label="Телефон моб."></VTextField>
+            <VTextField
+              v-model="client.mobilePhone"
+              label="Телефон моб."
+            ></VTextField>
           </VCol>
         </VRow>
         <VRow>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.email" label="E-mail"></VTextField>
+            <VTextField v-model="client.email" label="E-mail"></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.placeOfWork" label="Место работы"></VTextField>
+            <VTextField
+              v-model="client.placeOfWork"
+              label="Место работы"
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.position" label="Должность"></VTextField>
+            <VTextField
+              v-model="client.position"
+              label="Должность"
+            ></VTextField>
           </VCol>
         </VRow>
         <VRow>
@@ -117,7 +152,10 @@
             <VAutocomplete label="Город прописки"></VAutocomplete>
           </VCol>
           <VCol cols="12" md="4">
-            <VTextField v-model="state.client.livingAddress" label="Адрес прописки"></VTextField>
+            <VTextField
+              v-model="client.livingAddress"
+              label="Адрес прописки"
+            ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
             <VAutocomplete label="Семейное положение"></VAutocomplete>
@@ -136,17 +174,15 @@
         </VRow>
         <VRow>
           <VCol cols="12" md="4">
-              <v-currency-field label="Ежемесячный доход" suffix="BYN"/>
+            <v-currency-field label="Ежемесячный доход" suffix="BYN" />
           </VCol>
           <VCol cols="12" md="4">
             <VCheckbox label="Военнообязанный"></VCheckbox>
           </VCol>
         </VRow>
         <VCardActions>
-          <VSpacer/>
-          <VBtn color="primary">
-            Сохранить
-          </VBtn>
+          <VSpacer />
+          <VBtn color="primary"> Сохранить </VBtn>
         </VCardActions>
       </VCard>
     </VRow>
@@ -159,10 +195,13 @@ import { useClientForm } from "./ClientForm";
 
 export default defineComponent({
   setup() {
-    const { state } = useClientForm();
-    
+    const { state, clientForm, formatDateSimple, client } = useClientForm();
+
     return {
       state,
+      clientForm,
+      formatDateSimple,
+      client,
     };
   },
 });

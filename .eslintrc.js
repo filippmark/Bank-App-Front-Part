@@ -8,7 +8,6 @@ module.exports = {
     '@vue/airbnb',
     '@vue/typescript/recommended',
     'plugin:prettier/recommended',
-    'plugin:cypress/recommended',
   ],
   parserOptions: {
     parser: '@typescript-eslint/parser',
