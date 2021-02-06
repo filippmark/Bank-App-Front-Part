@@ -13,7 +13,7 @@ const mutations: MutationTree<State> = {
   },
   [Mutations.CLEAR_CLIENT]: (state: State, clearClient: Client) => {
     state[States.client] = clearClient;
-  }
+  },
 };
 
 export default mutations;
