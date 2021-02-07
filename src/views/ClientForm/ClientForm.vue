@@ -253,6 +253,14 @@ export default defineComponent({
       updateBirthdayField,
       updateIssueDateField,
       handleClientUpdating,
+      towns,
+      isTownLoading,
+      citizenships,
+      isCitizenshipsLoading,
+      disabilities,
+      isDisabilitiesLoading,
+      maritalStatuses,
+      isMaritalStatusesLoading,
     } = useClientForm();
 
     return {
@@ -264,6 +272,14 @@ export default defineComponent({
       updateBirthdayField,
       updateIssueDateField,
       handleClientUpdating,
+      towns,
+      isTownLoading,
+      citizenships,
+      isCitizenshipsLoading,
+      disabilities,
+      isDisabilitiesLoading,
+      maritalStatuses,
+      isMaritalStatusesLoading,
     };
   },
 });
