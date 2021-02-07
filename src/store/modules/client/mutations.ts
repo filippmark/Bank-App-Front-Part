@@ -11,8 +11,14 @@ const mutations: MutationTree<State> = {
     const { field, value } = newValue;
     state[States.client][field] = value;
   },
-  [Mutations.CLEAR_CLIENT]: (state: State, clearClient: Client) => {
+  [Mutations.SET_CLIENT]: (state: State, clearClient: Client) => {
     state[States.client] = clearClient;
+  },
+  [Mutations.SET_CLIENTS]: (state: State, clients: []) => {
+    state[States.clients] = clients;
+  },
+  [Mutations.UPDATE_CLIENT_LOADING]: (state: State, loading: boolean) => {
+    state[States.isClientLoading] = loading;
   },
 };
 

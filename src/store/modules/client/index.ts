@@ -36,6 +36,8 @@ export const initialStateClient: Client = {
 
 export const state: State = {
   [States.client]: initialStateClient,
+  [States.clients]: [],
+  [States.isClientLoading]: false,
 };
 
 const module: Module<State, RootState> = {

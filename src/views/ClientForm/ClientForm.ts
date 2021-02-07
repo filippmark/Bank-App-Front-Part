@@ -66,9 +66,9 @@ export const useClientForm = () => {
   const { formatDateSimple } = useFormatter();
 
   const { client } = useState([States.client]);
-  const { UPDATE_CLIENT_FIELD, CLEAR_CLIENT } = useMutations([
+  const { UPDATE_CLIENT_FIELD, SET_CLIENT } = useMutations([
     Mutations.UPDATE_CLIENT_FIELD,
-    Mutations.CLEAR_CLIENT,
+    Mutations.SET_CLIENT,
   ]);
 
   const { towns, isTownLoading } = useTownsStore([
@@ -112,7 +112,7 @@ export const useClientForm = () => {
   });
 
   onUnmounted(() => {
-    CLEAR_CLIENT(initialStateClient);
+    SET_CLIENT(initialStateClient);
     state.isClientFieldsChanged = false;
   });
 
