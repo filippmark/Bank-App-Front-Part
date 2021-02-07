@@ -136,6 +136,18 @@ export const useClientForm = () => {
     UPDATE_CLIENT_FIELD({ field: "issueDate", value });
   };
 
+  const handleAutocompleteChange = (
+    field: string,
+    value: number | Nullable
+  ) => {
+    state.isClientFieldsChanged = true;
+    UPDATE_CLIENT_FIELD({ field, value });
+  };
+
+  const isFieldNotEmpty = (value: any) => {
+    return !!value || "заполните поле";
+  };
+
   const handleClientUpdating = () => {
     console.log("22222");
   };
@@ -149,6 +161,7 @@ export const useClientForm = () => {
     updateBirthdayField,
     updateIssueDateField,
     handleClientUpdating,
+    handleAutocompleteChange,
     towns,
     isTownLoading,
     citizenships,
@@ -157,5 +170,6 @@ export const useClientForm = () => {
     isDisabilitiesLoading,
     maritalStatuses,
     isMaritalStatusesLoading,
+    isFieldNotEmpty,
   };
 };
