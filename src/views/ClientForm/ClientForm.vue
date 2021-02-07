@@ -1,7 +1,7 @@
 <template>
   <VForm ref="clientForm" v-model="state.isFormValid" class="client-form ma-10">
     <VRow justify="center" align="center">
-      <VCard class="client-form__card pa-6" :loading="state.loading">
+      <VCard class="client-form__card pa-6" :loading="isClientLoading">
         <VRow>
           <VCol cols="12" md="4">
             <VTextField
@@ -79,10 +79,10 @@
         <VRow>
           <VCol cols="12" md="4">
             <VTextField
-              :value="client.passportId"
+              :value="client.passportNumber"
               :rules="[isFieldNotEmpty]"
               label="№ паспорта"
-              @input="updateFieldForClient('passportId', $event)"
+              @input="updateFieldForClient('passportNumber', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
@@ -309,7 +309,7 @@ import { defineComponent } from "@vue/composition-api";
 import { useClientForm } from "./ClientForm";
 
 export default defineComponent({
-  setup() {
+  setup(_, { root: { $router: router, $route: route } }) {
     const {
       state,
       clientForm,
@@ -329,7 +329,8 @@ export default defineComponent({
       isMaritalStatusesLoading,
       handleAutocompleteChange,
       isFieldNotEmpty,
-    } = useClientForm();
+      isClientLoading,
+    } = useClientForm(router, route);
 
     return {
       state,
@@ -350,6 +351,7 @@ export default defineComponent({
       isMaritalStatusesLoading,
       handleAutocompleteChange,
       isFieldNotEmpty,
+      isClientLoading,
     };
   },
 });

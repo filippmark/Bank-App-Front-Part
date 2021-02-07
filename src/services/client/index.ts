@@ -28,6 +28,7 @@ export const createClient = async (
   client: Client
 ): Promise<AxiosResponse<Client>> => {
   try {
+    console.log({ ...client });
     return await axios.post(`${baseUrl}/client`, {
       ...client,
     });

@@ -26,12 +26,10 @@ const actions: ActionTree<State, RootState> = {
     }
     commit(Mutations.UPDATE_CLIENT_LOADING, false);
   },
-  [Actions.CREATE_CLIENT]: async (
-    { commit },
-    { id, client }: { id: string; client: Client }
-  ) => {
+  [Actions.CREATE_CLIENT]: async ({ commit }, client: Client) => {
     commit(Mutations.UPDATE_CLIENT_LOADING, true);
-    const response = await updateClient({ id, client });
+    console.log(client);
+    const response = await createClient(client);
     if (response.data) {
       commit(Mutations.SET_CLIENT, response.data);
     }
@@ -42,6 +40,17 @@ const actions: ActionTree<State, RootState> = {
     const response = await fetchClients();
     if (response.data) {
       commit(Mutations.SET_CLIENTS, response.data);
+    }
+    commit(Mutations.UPDATE_CLIENT_LOADING, false);
+  },
+  [Actions.UPDATE_CLIENT]: async (
+    { commit },
+    { id, client }: { id: string; client: Client }
+  ) => {
+    commit(Mutations.UPDATE_CLIENT_LOADING, true);
+    const response = await updateClient({ id, client });
+    if (response.data) {
+      commit(Mutations.SET_CLIENT, response.data);
     }
     commit(Mutations.UPDATE_CLIENT_LOADING, false);
   },

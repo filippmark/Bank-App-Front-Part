@@ -6,8 +6,13 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
+    path: "/:id",
+    name: "ExistingClient",
+    component: ClientForm,
+  },
+  {
     path: "/",
-    name: "Home",
+    name: "CreateClient",
     component: ClientForm,
   },
 ];

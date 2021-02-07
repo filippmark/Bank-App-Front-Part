@@ -8,7 +8,7 @@ import {
   Ref,
   onMounted,
 } from "@vue/composition-api";
-import { Mutations, States } from "@/store/modules/client/types";
+import { Actions, Mutations, States } from "@/store/modules/client/types";
 import {
   Actions as TownActions,
   States as TownStates,
@@ -27,8 +27,9 @@ import {
 } from "@/store/modules/maritalStatus/types";
 import { Nullable } from "@/types/global";
 import { initialStateClient } from "@/store/modules/client";
+import VueRouter, { Route } from "vue-router";
 
-const { useState, useMutations } = useStore(Modules.CLIENT);
+const { useState, useMutations, useActions } = useStore(Modules.CLIENT);
 
 const { useState: useTownsStore, useActions: useTownsActions } = useStore(
   Modules.TOWN
@@ -52,23 +53,34 @@ interface State {
   isIssueDateOpen: boolean;
   isClientFieldsChanged: boolean;
   isFormValid: boolean;
+  isNewClient: boolean;
 }
 
-export const useClientForm = () => {
+export const useClientForm = (router: VueRouter, route: Route) => {
   const state: State = reactive<State>({
     isBirtdayMenuOpen: false,
     isIssueDateOpen: false,
     loading: false,
     isClientFieldsChanged: false,
     isFormValid: true,
+    isNewClient: true,
   });
   const clientForm: Ref<any> = ref(null);
   const { formatDateSimple } = useFormatter();
 
-  const { client } = useState([States.client]);
+  const { client, isClientLoading } = useState([
+    States.client,
+    States.isClientLoading,
+  ]);
   const { UPDATE_CLIENT_FIELD, SET_CLIENT } = useMutations([
     Mutations.UPDATE_CLIENT_FIELD,
     Mutations.SET_CLIENT,
+  ]);
+
+  const { CREATE_CLIENT, UPDATE_CLIENT, LOAD_CLIENT_DATA } = useActions([
+    Actions.CREATE_CLIENT,
+    Actions.UPDATE_CLIENT,
+    Actions.LOAD_CLIENT_DATA,
   ]);
 
   const { towns, isTownLoading } = useTownsStore([
@@ -105,6 +117,11 @@ export const useClientForm = () => {
   ]);
 
   onMounted(() => {
+    console.log(route, router);
+    const clientId = route.params.id;
+    if (clientId) {
+      LOAD_CLIENT_DATA(clientId);
+    }
     LOAD_TOWNS();
     LOAD_CITIZENSHIPS();
     LOAD_DISABILITIES();
@@ -149,13 +166,18 @@ export const useClientForm = () => {
   };
 
   const handleClientUpdating = () => {
-    console.log("22222");
+    if (state.isNewClient) {
+      CREATE_CLIENT(client.value);
+    } else {
+      UPDATE_CLIENT(client.value);
+    }
   };
 
   return {
     state,
     client,
     clientForm,
+    isClientLoading,
     formatDateSimple,
     updateFieldForClient,
     updateBirthdayField,

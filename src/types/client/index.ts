@@ -6,6 +6,7 @@ export interface Option {
 }
 
 export interface Client {
+  id?: string;
   name: string;
   surname: string;
   middleName: string;
