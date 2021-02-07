@@ -4,4 +4,8 @@ export interface RootState {
 
 export enum Modules {
   CLIENT = "CLIENT",
+  CITIZENSHIP = "CITIZENSHIP",
+  DISABILITY = "DISABILITY",
+  TOWN = "TOWN",
+  MARITAL_STATUS = "MARITAL_STATUS",
 }

@@ -27,10 +27,11 @@ export const initialStateClient: Client = {
   isPensioner: false,
   isLiableForMilitary: false,
   monthlyIncome: 0,
-  citizenship: null,
-  disability: null,
-  regTown: null,
-  actualTown: null,
+  citizenshipId: null,
+  disabilityId: null,
+  regTownId: null,
+  actualTownId: null,
+  maritalStatusId: null,
 };
 
 export const state: State = {
