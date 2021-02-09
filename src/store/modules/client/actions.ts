@@ -28,7 +28,6 @@ const actions: ActionTree<State, RootState> = {
   },
   [Actions.CREATE_CLIENT]: async ({ commit }, client: Client) => {
     commit(Mutations.UPDATE_CLIENT_LOADING, true);
-    console.log(client);
     const response = await createClient(client);
     if (response.data) {
       commit(Mutations.SET_CLIENT, response.data);

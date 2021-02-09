@@ -117,9 +117,9 @@ export const useClientForm = (router: VueRouter, route: Route) => {
   ]);
 
   onMounted(() => {
-    console.log(route, router);
     const clientId = route.params.id;
     if (clientId) {
+      state.isNewClient = false;
       LOAD_CLIENT_DATA(clientId);
     }
     LOAD_TOWNS();
@@ -130,7 +130,6 @@ export const useClientForm = (router: VueRouter, route: Route) => {
 
   onUnmounted(() => {
     SET_CLIENT(initialStateClient);
-    state.isClientFieldsChanged = false;
   });
 
   const updateFieldForClient = (
@@ -169,7 +168,7 @@ export const useClientForm = (router: VueRouter, route: Route) => {
     if (state.isNewClient) {
       CREATE_CLIENT(client.value);
     } else {
-      UPDATE_CLIENT(client.value);
+      UPDATE_CLIENT({ id: route.params.id, client: client.value });
     }
   };
 

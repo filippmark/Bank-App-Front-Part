@@ -1,17 +1,23 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import ClientForm from "@/views/ClientForm/ClientForm.vue";
+import Clients from "@/views/Clients/Clients.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/:id",
+    path: "/",
+    name: "ClientsList",
+    component: Clients,
+  },
+  {
+    path: "/client/:id",
     name: "ExistingClient",
     component: ClientForm,
   },
   {
-    path: "/",
+    path: "/client",
     name: "CreateClient",
     component: ClientForm,
   },
