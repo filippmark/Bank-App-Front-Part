@@ -37,6 +37,7 @@ const headers = [
     value: "monthlyIncome",
     text: "Месячный заработок",
   },
+  { text: "Actions", value: "actions", sortable: false },
 ];
 
 export const useClients = (router: VueRouter) => {
@@ -47,9 +48,13 @@ export const useClients = (router: VueRouter) => {
 
   const { formatDateSimple } = useFormatter();
 
-  onMounted(() => {
-    const { LOAD_CLIENTS } = useActions([Actions.LOAD_CLIENTS]);
-    LOAD_CLIENTS();
+  const { LOAD_CLIENTS, DELETE_CLIENT } = useActions([
+    Actions.LOAD_CLIENTS,
+    Actions.DELETE_CLIENT,
+  ]);
+
+  onMounted(async () => {
+    await LOAD_CLIENTS();
   });
 
   const handleRowClick = (item: Client) => {
@@ -58,11 +63,17 @@ export const useClients = (router: VueRouter) => {
     });
   };
 
+  const handleDeleteClient = async (client: Client) => {
+    await DELETE_CLIENT(client.id);
+    await LOAD_CLIENTS();
+  };
+
   return {
     clients,
     isClientLoading,
     headers,
     formatDateSimple,
     handleRowClick,
+    handleDeleteClient,
   };
 };

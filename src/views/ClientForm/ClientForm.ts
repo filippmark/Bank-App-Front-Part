@@ -137,7 +137,15 @@ export const useClientForm = (router: VueRouter, route: Route) => {
     value: string | number | boolean | Nullable
   ) => {
     state.isClientFieldsChanged = true;
-    UPDATE_CLIENT_FIELD({ field, value });
+    if (
+      field === "isLiableForMilitary" ||
+      field === "isPensioner" ||
+      field === "sex"
+    ) {
+      UPDATE_CLIENT_FIELD({ field, value: !!value });
+    } else {
+      UPDATE_CLIENT_FIELD({ field, value });
+    }
   };
 
   const updateBirthdayField = (value: string) => {
@@ -168,6 +176,7 @@ export const useClientForm = (router: VueRouter, route: Route) => {
     if (state.isNewClient) {
       CREATE_CLIENT(client.value);
     } else {
+      state.isClientFieldsChanged = false;
       UPDATE_CLIENT({ id: route.params.id, client: client.value });
     }
   };

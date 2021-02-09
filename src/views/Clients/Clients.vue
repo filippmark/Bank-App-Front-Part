@@ -1,12 +1,21 @@
 <template>
   <VRow class="clients-list" justify="center" align="center">
-    <v-data-table
+    <VDataTable
       :headers="headers"
       :items="clients"
       :items-per-page="5"
+      :loading="isClientLoading"
       class="elevation-1"
       @click:row="handleRowClick"
     >
+      <template v-slot:top>
+        <VToolbar flat>
+          <VToolbarTitle> Список клиентов </VToolbarTitle>
+          <VDivider class="mx-4" inset vertical></VDivider>
+          <VSpacer></VSpacer>
+          <VBtn dark color="green" to="/client"> новый клиент </VBtn>
+        </VToolbar>
+      </template>
       <template #item.name="{ item }">
         <span>
           {{ `${item.name} ${item.surname} ${item.middleName}` }}
@@ -27,7 +36,10 @@
           {{ item.position ? item.position : "-" }}
         </span>
       </template>
-    </v-data-table>
+      <template #item.actions="{ item }">
+        <VIcon @click.stop="handleDeleteClient(item)"> mdi-delete </VIcon>
+      </template>
+    </VDataTable>
   </VRow>
 </template>
 
@@ -43,6 +55,7 @@ export default defineComponent({
       headers,
       formatDateSimple,
       handleRowClick,
+      handleDeleteClient,
     } = useClients(router);
 
     return {
@@ -51,14 +64,19 @@ export default defineComponent({
       headers,
       formatDateSimple,
       handleRowClick,
+      handleDeleteClient,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .clients-list {
   margin-top: 100px;
   width: 100%;
+
+  tr {
+    cursor: pointer;
+  }
 }
 </style>

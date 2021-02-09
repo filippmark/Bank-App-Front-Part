@@ -63,7 +63,6 @@
             <VCheckbox
               :value="client.sex"
               :label="`Пол: ${client.sex ? 'мужской' : 'женский'}`"
-              :rules="[isFieldNotEmpty]"
               @change="updateFieldForClient('sex', $event)"
             ></VCheckbox>
           </VCol>
@@ -293,7 +292,8 @@
           <VSpacer />
           <VBtn
             color="primary"
-            :disabled="!state.isFormValid"
+            :disabled="!state.isFormValid || !state.isClientFieldsChanged"
+            :loading="isClientLoading"
             @click="handleClientUpdating"
           >
             Сохранить

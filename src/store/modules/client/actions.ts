@@ -1,5 +1,6 @@
 import {
   createClient,
+  deleteClient,
   fetchClient,
   fetchClients,
   updateClient,
@@ -51,6 +52,11 @@ const actions: ActionTree<State, RootState> = {
     if (response.data) {
       commit(Mutations.SET_CLIENT, response.data);
     }
+    commit(Mutations.UPDATE_CLIENT_LOADING, false);
+  },
+  [Actions.DELETE_CLIENT]: async ({ commit }, id: string) => {
+    commit(Mutations.UPDATE_CLIENT_LOADING, true);
+    await deleteClient(id);
     commit(Mutations.UPDATE_CLIENT_LOADING, false);
   },
 };

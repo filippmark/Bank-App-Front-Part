@@ -4,6 +4,7 @@
       <div class="d-flex align-center"></div>
 
       <VSpacer></VSpacer>
+      <VBtn color="green" to="/"> Клиенты </VBtn>
     </VAppBar>
 
     <VMain>

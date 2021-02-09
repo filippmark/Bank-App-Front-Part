@@ -54,3 +54,12 @@ export const updateClient = async ({
     return { error };
   }
 };
+
+export const deleteClient = async (id: string) => {
+  try {
+    return await axios.delete(`${baseUrl}/client/${id}`);
+  } catch (error) {
+    logError(error);
+    return { error };
+  }
+};
