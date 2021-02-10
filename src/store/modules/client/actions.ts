@@ -5,9 +5,10 @@ import {
   fetchClients,
   updateClient,
 } from "@/services/client";
-import { RootState } from "@/store/types";
+import { Modules, RootState } from "@/store/types";
 import { Client } from "@/types/client";
 import { ActionTree } from "vuex";
+import { Mutations as ErrorMutations } from "@/store/modules/error/types";
 import { Actions, Mutations, State } from "./types";
 
 const actions: ActionTree<State, RootState> = {
@@ -16,30 +17,11 @@ const actions: ActionTree<State, RootState> = {
     const response = await createClient(client);
     if (response.data) {
       commit(Mutations.SET_CLIENT, response.data);
-    }
-    commit(Mutations.UPDATE_CLIENT_LOADING, false);
-  },
-  [Actions.LOAD_CLIENT_DATA]: async ({ commit }, id: string) => {
-    commit(Mutations.UPDATE_CLIENT_LOADING, true);
-    const response = await fetchClient(id);
-    if (response.data) {
-      commit(Mutations.SET_CLIENT, response.data);
-    }
-    commit(Mutations.UPDATE_CLIENT_LOADING, false);
-  },
-  [Actions.CREATE_CLIENT]: async ({ commit }, client: Client) => {
-    commit(Mutations.UPDATE_CLIENT_LOADING, true);
-    const response = await createClient(client);
-    if (response.data) {
-      commit(Mutations.SET_CLIENT, response.data);
-    }
-    commit(Mutations.UPDATE_CLIENT_LOADING, false);
-  },
-  [Actions.LOAD_CLIENTS]: async ({ commit }) => {
-    commit(Mutations.UPDATE_CLIENT_LOADING, true);
-    const response = await fetchClients();
-    if (response.data) {
-      commit(Mutations.SET_CLIENTS, response.data);
+    } else if (response.error) {
+      commit(
+        `${Modules.ERROR_SNAPBACK}/${ErrorMutations.UPDATE_ERROR_MESSAGE}`,
+        "error"
+      );
     }
     commit(Mutations.UPDATE_CLIENT_LOADING, false);
   },
@@ -51,6 +33,27 @@ const actions: ActionTree<State, RootState> = {
     const response = await updateClient({ id, client });
     if (response.data) {
       commit(Mutations.SET_CLIENT, response.data);
+    } else if (response.error) {
+      commit(
+        `${Modules.ERROR_SNAPBACK}/${ErrorMutations.UPDATE_ERROR_MESSAGE}`,
+        "error"
+      );
+    }
+    commit(Mutations.UPDATE_CLIENT_LOADING, false);
+  },
+  [Actions.LOAD_CLIENT_DATA]: async ({ commit }, id: string) => {
+    commit(Mutations.UPDATE_CLIENT_LOADING, true);
+    const response = await fetchClient(id);
+    if (response.data) {
+      commit(Mutations.SET_CLIENT, response.data);
+    }
+    commit(Mutations.UPDATE_CLIENT_LOADING, false);
+  },
+  [Actions.LOAD_CLIENTS]: async ({ commit }) => {
+    commit(Mutations.UPDATE_CLIENT_LOADING, true);
+    const response = await fetchClients();
+    if (response.data) {
+      commit(Mutations.SET_CLIENTS, response.data);
     }
     commit(Mutations.UPDATE_CLIENT_LOADING, false);
   },

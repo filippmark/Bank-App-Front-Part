@@ -12,7 +12,6 @@
     </VMain>
     <VSnackbar v-model="showError">
       {{ errorMessage }}
-
       <template v-slot:action="{ attrs }">
         <VBtn
           color="pink"
