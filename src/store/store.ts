@@ -5,6 +5,7 @@ import citizenship from "@/store/modules/citizenship";
 import maritalStatuses from "@/store/modules/maritalStatus";
 import town from "@/store/modules/town";
 import disabilities from "@/store/modules/disability";
+import error from "@/store/modules/error";
 import { Modules, RootState } from "./types";
 
 const storeOptions: StoreOptions<RootState> = {
@@ -14,6 +15,7 @@ const storeOptions: StoreOptions<RootState> = {
     [Modules.MARITAL_STATUS]: maritalStatuses,
     [Modules.DISABILITY]: disabilities,
     [Modules.TOWN]: town,
+    [Modules.ERROR_SNAPBACK]: error,
   },
 };
 
