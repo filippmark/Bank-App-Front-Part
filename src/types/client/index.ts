@@ -5,6 +5,14 @@ export interface Option {
   name: string;
 }
 
+export enum OptionalFields {
+  MOBILE_PHONE = "mobilePhone",
+  HOME_PHONE = "homePhone",
+  EMAIL = "email",
+  PLACE_OF_WORK = "placeOfWork",
+  POSITION = "position",
+}
+
 export interface Client {
   id?: string;
   name: string;
@@ -19,15 +27,15 @@ export interface Client {
   passportId: string;
   placeOfBirth: string;
   livingAddress: string;
-  mobilePhone: string;
-  homePhone: string;
-  email: string;
-  placeOfWork: string;
-  position: string;
+  mobilePhone?: string;
+  homePhone?: string;
+  email?: string;
+  placeOfWork?: string;
+  position?: string;
   placeOfResidence: string;
   isPensioner: boolean;
   isLiableForMilitary: boolean;
-  monthlyIncome: number;
+  monthlyIncome?: number;
   citizenshipId: number | Nullable;
   disabilityId: number | Nullable;
   regTownId: number | Nullable;

@@ -10,11 +10,13 @@
     <VMain>
       <router-view></router-view>
     </VMain>
-    <VSnackbar v-model="showError">
-      {{ errorMessage }}
+    <VSnackbar :value="showError" color="red" multi-line vertical>
+      <div v-for="message in errorMessages" :key="message" class="pb-2">
+        {{ message }}
+      </div>
       <template v-slot:action="{ attrs }">
         <VBtn
-          color="pink"
+          color="black"
           icon
           v-bind="attrs"
           @click="UPDATE_SHOW_ERROR(false)"
@@ -36,15 +38,15 @@ export default defineComponent({
   setup() {
     const { useState, useMutations } = useStore(Modules.ERROR_SNAPBACK);
 
-    const { errorMessage, showError } = useState([
-      States.errorMessage,
+    const { errorMessages, showError } = useState([
+      States.errorMessages,
       States.showError,
     ]);
 
     const { UPDATE_SHOW_ERROR } = useMutations([Mutations.UPDATE_SHOW_ERROR]);
 
     return {
-      errorMessage,
+      errorMessages,
       showError,
       UPDATE_SHOW_ERROR,
     };

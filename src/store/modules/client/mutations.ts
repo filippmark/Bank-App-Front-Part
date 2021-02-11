@@ -12,6 +12,7 @@ const mutations: MutationTree<State> = {
     state[States.client][field] = value;
   },
   [Mutations.SET_CLIENT]: (state: State, clearClient: Client) => {
+    console.log(clearClient);
     state[States.client] = clearClient;
   },
   [Mutations.SET_CLIENTS]: (state: State, clients: []) => {

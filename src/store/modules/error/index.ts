@@ -4,7 +4,7 @@ import { Module } from "vuex";
 import mutations from "@/store/modules/error/mutations";
 
 export const state: State = {
-  [States.errorMessage]: "",
+  [States.errorMessages]: [],
   [States.showError]: false,
 };
 

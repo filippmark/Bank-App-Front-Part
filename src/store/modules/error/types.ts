@@ -4,11 +4,11 @@ export enum Mutations {
 }
 
 export interface State {
-  errorMessage: string;
+  errorMessages: string[];
   showError: boolean;
 }
 
 export enum States {
-  errorMessage = "errorMessage",
+  errorMessages = "errorMessages",
   showError = "showError",
 }

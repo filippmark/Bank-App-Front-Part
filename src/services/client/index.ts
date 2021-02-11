@@ -47,7 +47,6 @@ export const updateClient = async ({
   try {
     return await axios.put(`${baseUrl}/client/${id}`, {
       ...client,
-      monthlyIncome: client.monthlyIncome * 100,
     });
   } catch (error) {
     logError(error);

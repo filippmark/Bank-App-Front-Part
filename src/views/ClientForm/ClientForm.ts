@@ -7,6 +7,8 @@ import {
   ref,
   Ref,
   onMounted,
+  ComputedRef,
+  computed,
 } from "@vue/composition-api";
 import { Actions, Mutations, States } from "@/store/modules/client/types";
 import {
@@ -28,6 +30,8 @@ import {
 import { Nullable } from "@/types/global";
 import { initialStateClient } from "@/store/modules/client";
 import VueRouter, { Route } from "vue-router";
+import { OptionalFields } from "@/types/client";
+import validator from "validator";
 
 const { useState, useMutations, useActions } = useStore(Modules.CLIENT);
 
@@ -172,12 +176,70 @@ export const useClientForm = (router: VueRouter, route: Route) => {
     return !!value || "заполните поле";
   };
 
-  const handleClientUpdating = () => {
+  const isEmailRule = (value: string) => {
+    const isValid = value === "" || validator.isEmail(value);
+    return isValid || "введите корректный email";
+  };
+
+  const isAlpha = (value: string) => {
+    return (
+      validator.isAlpha(value, "ru-RU") || "введите слово, используя алфавит"
+    );
+  };
+
+  const isPassportNumber = (value: string) => {
+    return validator.isPassportNumber(value, "BY") || "некорректно";
+  };
+
+  const isAlphanumeric = (value: string) => {
+    return validator.isAlphanumeric(value) || "некорректно";
+  };
+
+  const isMobilePhone = (value: string) => {
+    const isValid = value === "" || validator.isMobilePhone(value, "be-BY");
+    return isValid || "некорректно";
+  };
+
+  const removeOptionalFalseFields = () => {
+    const fieldNames = Object.values(OptionalFields);
+    const preparedClient = { ...client.value };
+    fieldNames.forEach((fieldName) => {
+      if (!preparedClient[fieldName]) {
+        delete preparedClient[fieldName];
+      }
+    });
+    return preparedClient;
+  };
+
+  const isUserAbleToUpdate: ComputedRef<boolean> = computed(() => {
+    if (state.isNewClient && state.isFormValid) {
+      return true;
+    }
+    if (
+      !state.isNewClient &&
+      state.isFormValid &&
+      state.isClientFieldsChanged
+    ) {
+      return true;
+    }
+    return false;
+  });
+
+  const handleClientUpdating = async () => {
+    const preparedClient = removeOptionalFalseFields();
+    let isErrorHappened = false;
     if (state.isNewClient) {
-      CREATE_CLIENT(client.value);
+      isErrorHappened = await CREATE_CLIENT(preparedClient);
     } else {
       state.isClientFieldsChanged = false;
-      UPDATE_CLIENT({ id: route.params.id, client: client.value });
+      isErrorHappened = await UPDATE_CLIENT({
+        id: route.params.id,
+        client: preparedClient,
+      });
+    }
+    if (!isErrorHappened) {
+      SET_CLIENT(initialStateClient);
+      router.push({ path: "/" });
     }
   };
 
@@ -201,5 +263,11 @@ export const useClientForm = (router: VueRouter, route: Route) => {
     maritalStatuses,
     isMaritalStatusesLoading,
     isFieldNotEmpty,
+    isUserAbleToUpdate,
+    isEmailRule,
+    isAlpha,
+    isPassportNumber,
+    isAlphanumeric,
+    isMobilePhone,
   };
 };

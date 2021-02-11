@@ -13,6 +13,7 @@ import { Actions, Mutations, State } from "./types";
 
 const actions: ActionTree<State, RootState> = {
   [Actions.CREATE_CLIENT]: async ({ commit }, client: Client) => {
+    let isErrorHappened = false;
     commit(Mutations.UPDATE_CLIENT_LOADING, true);
     const response = await createClient(client);
     if (response.data) {
@@ -20,15 +21,19 @@ const actions: ActionTree<State, RootState> = {
     } else if (response.error) {
       commit(
         `${Modules.ERROR_SNAPBACK}/${ErrorMutations.UPDATE_ERROR_MESSAGE}`,
-        "error"
+        response.error.response.data.message,
+        { root: true }
       );
+      isErrorHappened = true;
     }
     commit(Mutations.UPDATE_CLIENT_LOADING, false);
+    return isErrorHappened;
   },
   [Actions.UPDATE_CLIENT]: async (
     { commit },
     { id, client }: { id: string; client: Client }
   ) => {
+    let isErrorHappened = false;
     commit(Mutations.UPDATE_CLIENT_LOADING, true);
     const response = await updateClient({ id, client });
     if (response.data) {
@@ -36,10 +41,13 @@ const actions: ActionTree<State, RootState> = {
     } else if (response.error) {
       commit(
         `${Modules.ERROR_SNAPBACK}/${ErrorMutations.UPDATE_ERROR_MESSAGE}`,
-        "error"
+        response.error.response.data.message,
+        { root: true }
       );
+      isErrorHappened = true;
     }
     commit(Mutations.UPDATE_CLIENT_LOADING, false);
+    return isErrorHappened;
   },
   [Actions.LOAD_CLIENT_DATA]: async ({ commit }, id: string) => {
     commit(Mutations.UPDATE_CLIENT_LOADING, true);

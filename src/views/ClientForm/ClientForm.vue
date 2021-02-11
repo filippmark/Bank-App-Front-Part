@@ -6,7 +6,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.name"
-              :rules="[isFieldNotEmpty]"
+              :rules="[isFieldNotEmpty, isAlpha]"
               label="Имя"
               @input="updateFieldForClient('name', $event)"
             ></VTextField>
@@ -14,7 +14,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.surname"
-              :rules="[isFieldNotEmpty]"
+              :rules="[isFieldNotEmpty, isAlpha]"
               label="Фамилия"
               @input="updateFieldForClient('surname', $event)"
             ></VTextField>
@@ -22,7 +22,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.middleName"
-              :rules="[isFieldNotEmpty]"
+              :rules="[isFieldNotEmpty, isAlpha]"
               label="Отчество"
               @input="updateFieldForClient('middleName', $event)"
             ></VTextField>
@@ -69,7 +69,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.passportSeries"
-              :rules="[isFieldNotEmpty]"
+              :rules="[isFieldNotEmpty, isPassportNumber]"
               label="Серия паспорта"
               @input="updateFieldForClient('passportSeries', $event)"
             ></VTextField>
@@ -79,7 +79,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.passportNumber"
-              :rules="[isFieldNotEmpty]"
+              :rules="[isFieldNotEmpty, isAlphanumeric]"
               label="№ паспорта"
               @input="updateFieldForClient('passportNumber', $event)"
             ></VTextField>
@@ -126,7 +126,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.passportId"
-              :rules="[isFieldNotEmpty]"
+              :rules="[isFieldNotEmpty, isAlphanumeric]"
               label="Идент. номер"
               @input="updateFieldForClient('passportId', $event)"
             ></VTextField>
@@ -156,10 +156,10 @@
         <VRow>
           <VCol cols="12" md="4">
             <VTextField
-              :value="client.placeOfResidence"
+              :value="client.livingAddress"
               :rules="[isFieldNotEmpty]"
               label="Адрес факт. проживания"
-              @input="updateFieldForClient('placeOfResidence', $event)"
+              @input="updateFieldForClient('livingAddress', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
@@ -172,6 +172,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.mobilePhone"
+              :rules="[isMobilePhone]"
               label="Телефон моб."
               @input="updateFieldForClient('mobilePhone', $event)"
             ></VTextField>
@@ -181,6 +182,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.email"
+              :rules="[isEmailRule]"
               label="E-mail"
               @input="updateFieldForClient('email', $event)"
             ></VTextField>
@@ -216,9 +218,10 @@
           </VCol>
           <VCol cols="12" md="4">
             <VTextField
-              :value="client.livingAddress"
+              :value="client.placeOfResidence"
+              :rules="[isFieldNotEmpty]"
               label="Адрес прописки"
-              @input="updateFieldForClient('livingAddress', $event)"
+              @input="updateFieldForClient('placeOfResidence', $event)"
             ></VTextField>
           </VCol>
           <VCol cols="12" md="4">
@@ -292,8 +295,8 @@
           <VSpacer />
           <VBtn
             color="primary"
-            :disabled="!state.isFormValid || !state.isClientFieldsChanged"
             :loading="isClientLoading"
+            :disabled="!isUserAbleToUpdate"
             @click="handleClientUpdating"
           >
             Сохранить
@@ -330,6 +333,12 @@ export default defineComponent({
       handleAutocompleteChange,
       isFieldNotEmpty,
       isClientLoading,
+      isUserAbleToUpdate,
+      isEmailRule,
+      isAlpha,
+      isPassportNumber,
+      isAlphanumeric,
+      isMobilePhone,
     } = useClientForm(router, route);
 
     return {
@@ -352,6 +361,12 @@ export default defineComponent({
       handleAutocompleteChange,
       isFieldNotEmpty,
       isClientLoading,
+      isUserAbleToUpdate,
+      isEmailRule,
+      isAlpha,
+      isPassportNumber,
+      isAlphanumeric,
+      isMobilePhone,
     };
   },
 });
