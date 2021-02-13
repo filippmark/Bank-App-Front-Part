@@ -200,6 +200,11 @@ export const useClientForm = (router: VueRouter, route: Route) => {
     return isValid || "некорректно";
   };
 
+  const isNumeric = (value: string) => {
+    const isValid = value === "" || validator.isNumeric(value);
+    return isValid || "некорректно";
+  };
+
   const removeOptionalFalseFields = () => {
     const fieldNames = Object.values(OptionalFields);
     const preparedClient = { ...client.value };
@@ -269,5 +274,6 @@ export const useClientForm = (router: VueRouter, route: Route) => {
     isPassportNumber,
     isAlphanumeric,
     isMobilePhone,
+    isNumeric,
   };
 };

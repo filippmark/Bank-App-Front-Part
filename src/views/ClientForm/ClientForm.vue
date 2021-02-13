@@ -165,6 +165,7 @@
           <VCol cols="12" md="4">
             <VTextField
               :value="client.homePhone"
+              :rules="[isNumeric]"
               label="Телефон дом."
               @input="updateFieldForClient('homePhone', $event)"
             ></VTextField>
@@ -339,6 +340,7 @@ export default defineComponent({
       isPassportNumber,
       isAlphanumeric,
       isMobilePhone,
+      isNumeric,
     } = useClientForm(router, route);
 
     return {
@@ -367,6 +369,7 @@ export default defineComponent({
       isPassportNumber,
       isAlphanumeric,
       isMobilePhone,
+      isNumeric,
     };
   },
 });
