@@ -76,3 +76,25 @@ export interface ClientDeposit {
   mainBill: Bill;
   percentBill: Bill;
 }
+
+export interface ClientCredit {
+  id: number;
+  client: Client;
+  clientId: string;
+  credit: Credit;
+  creditId: number;
+  startCredit: string;
+  creditSum: number;
+  isClosed: boolean;
+  mainBill: Bill;
+  percentBill: Bill;
+}
+
+export interface Credit {
+  id: number;
+  isAnnuity: boolean;
+  percent: number;
+  termInMs: number;
+  maxSum: number;
+  currency: Option;
+}

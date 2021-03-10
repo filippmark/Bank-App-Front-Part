@@ -2,20 +2,20 @@
   <VRow class="clients-list" justify="center" align="center">
     <VDataTable
       :headers="headers"
-      :items="deposits"
+      :items="credits"
       :items-per-page="5"
-      :loading="isDepositsLoading"
+      :loading="isCreditsLoading"
       class="elevation-1"
     >
       <template v-slot:top>
         <VToolbar flat>
-          <VToolbarTitle> Список депозитов </VToolbarTitle>
+          <VToolbarTitle> Список кредитов </VToolbarTitle>
           <VDivider class="mx-4" inset vertical></VDivider>
           <VSpacer></VSpacer>
         </VToolbar>
       </template>
       <template #item.actions="{ item }">
-        <VIcon @click.stop="handleCreateClientDeposit(item)"> mdi-plus </VIcon>
+        <VIcon @click.stop="handleCreateClientCredit(item)"> mdi-plus </VIcon>
       </template>
     </VDataTable>
   </VRow>
@@ -23,24 +23,24 @@
 
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
-import { useDeposits } from "./Deposits";
+import { useDeposits } from "./Credit";
 
 export default defineComponent({
   setup(_, { root: { $router: router } }) {
     const {
-      deposits,
-      isDepositsLoading,
+      credits,
+      isCreditsLoading,
       headers,
       formatDateSimple,
-      handleCreateClientDeposit,
+      handleCreateClientCredit,
     } = useDeposits(router);
 
     return {
-      deposits,
-      isDepositsLoading,
+      credits,
+      isCreditsLoading,
       headers,
       formatDateSimple,
-      handleCreateClientDeposit,
+      handleCreateClientCredit,
     };
   },
 });

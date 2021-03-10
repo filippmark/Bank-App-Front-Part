@@ -4,10 +4,13 @@
       <div class="d-flex align-center"></div>
 
       <VSpacer></VSpacer>
-      <VBtn color="green" to="/"> Клиенты </VBtn>
-      <VBtn color="green" to="/deposits"> Депозиты </VBtn>
-      <VBtn color="green" to="/bills"> Счета </VBtn>
-      <VBtn color="green" to="/clientDeposits"> Депозиты клиентов </VBtn>
+      <VBtn class="mr-2" color="green" to="/"> Клиенты </VBtn>
+      <VBtn class="mr-2" color="green" to="/deposits"> Депозиты </VBtn>
+      <VBtn class="mr-2" color="green" to="/credits"> Кредиты </VBtn>
+      <VBtn class="mr-2" color="green" to="/bills"> Счета </VBtn>
+      <VBtn class="mr-2" color="green" to="/clientDeposits">
+        Депозиты клиентов
+      </VBtn>
     </VAppBar>
 
     <VMain>

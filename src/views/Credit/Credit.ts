@@ -1,8 +1,8 @@
 import { onMounted, Ref, ref } from "@vue/composition-api";
 import { useFormatter } from "@/uses/useFormatter";
 import VueRouter from "vue-router";
-import { Deposit } from "@/types/client";
-import { fetchDeposits } from "@/services/deposits";
+import { Credit, Deposit } from "@/types/client";
+import { fetchCredits } from "@/services/credit";
 
 const headers = [
   {
@@ -10,8 +10,8 @@ const headers = [
     text: "id",
   },
   {
-    value: "isRevocable",
-    text: "isRevocable",
+    value: "isAnnuity",
+    text: "isAnnuity",
   },
   {
     value: "percent",
@@ -22,8 +22,8 @@ const headers = [
     text: "termInMs",
   },
   {
-    value: "minSum",
-    text: "minSum",
+    value: "maxSum",
+    text: "maxSum",
   },
   {
     value: "currency.name",
@@ -35,29 +35,29 @@ const headers = [
 export const useDeposits = (router: VueRouter) => {
   const { formatDateSimple } = useFormatter();
 
-  const deposits: Ref<Deposit[]> = ref([]);
-  const isDepositsLoading: Ref<boolean> = ref(false);
+  const credits: Ref<Credit[]> = ref([]);
+  const isCreditsLoading: Ref<boolean> = ref(false);
 
   onMounted(async () => {
-    isDepositsLoading.value = true;
-    const { data } = await fetchDeposits();
+    isCreditsLoading.value = true;
+    const { data } = await fetchCredits();
     if (data) {
-      deposits.value = data;
+      credits.value = data;
     }
-    isDepositsLoading.value = false;
+    isCreditsLoading.value = false;
   });
 
-  const handleCreateClientDeposit = async (item: Deposit) => {
+  const handleCreateClientCredit = async (item: Deposit) => {
     router.push({
-      path: `/deposit/${item.id}`,
+      path: `/credit/${item.id}`,
     });
   };
 
   return {
-    deposits,
-    isDepositsLoading,
+    credits,
+    isCreditsLoading,
     headers,
     formatDateSimple,
-    handleCreateClientDeposit,
+    handleCreateClientCredit,
   };
 };

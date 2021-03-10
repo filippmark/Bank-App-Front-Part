@@ -1,23 +1,23 @@
-import { Deposit } from "@/types/client";
+import { Credit } from "@/types/client";
 import axios from "axios";
 import { AxiosResponse } from "@/types/global";
 import { logError } from "@/utils/logger";
 import { baseUrl } from "@/services";
 
-export const fetchDeposits = async (): Promise<AxiosResponse<Deposit[]>> => {
+export const fetchCredits = async (): Promise<AxiosResponse<Credit[]>> => {
   try {
-    return await axios.get(`${baseUrl}/deposit`);
+    return await axios.get(`${baseUrl}/credit`);
   } catch (error) {
     logError(error);
     return { error };
   }
 };
 
-export const fetchDepositById = async (
+export const fetchCreditById = async (
   id: number
-): Promise<AxiosResponse<Deposit>> => {
+): Promise<AxiosResponse<Credit>> => {
   try {
-    return await axios.get(`${baseUrl}/deposit/${id}`);
+    return await axios.get(`${baseUrl}/credit/${id}`);
   } catch (error) {
     logError(error);
     return { error };

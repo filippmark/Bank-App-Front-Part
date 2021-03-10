@@ -13,10 +13,22 @@
           <VToolbarTitle> Список депозитов клиентов </VToolbarTitle>
           <VDivider class="mx-4" inset vertical></VDivider>
           <VSpacer></VSpacer>
+          <VBtn
+            class="mr-2"
+            color="primary"
+            :loading="closingBankDay"
+            @click="handleCloseBankDay"
+          >
+            Закрыть банковский день по депозитам
+          </VBtn>
+          <VBtn
+            color="primary"
+            :loading="closingBankMonth"
+            @click="handleCloseBankMonth"
+          >
+            Закрыть банковский месяц по депозитам
+          </VBtn>
         </VToolbar>
-      </template>
-      <template #item.actions="{ item }">
-        <VIcon @click.stop="handleDeleteClient(item)"> mdi-delete </VIcon>
       </template>
     </VDataTable>
   </VRow>
@@ -34,7 +46,10 @@ export default defineComponent({
       headers,
       formatDateSimple,
       handleRowClick,
-      handleDeleteClient,
+      handleCloseBankDay,
+      closingBankDay,
+      closingBankMonth,
+      handleCloseBankMonth,
     } = useClientDeposits(router);
 
     return {
@@ -43,7 +58,10 @@ export default defineComponent({
       headers,
       formatDateSimple,
       handleRowClick,
-      handleDeleteClient,
+      handleCloseBankDay,
+      closingBankDay,
+      closingBankMonth,
+      handleCloseBankMonth,
     };
   },
 });

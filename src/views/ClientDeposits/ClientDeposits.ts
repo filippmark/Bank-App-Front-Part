@@ -1,8 +1,12 @@
 import { onMounted, ref, Ref } from "@vue/composition-api";
 import { useFormatter } from "@/uses/useFormatter";
 import VueRouter from "vue-router";
-import { Client, ClientDeposit } from "@/types/client";
-import { fetchClientDeposits } from "@/services/clientDeposit";
+import { ClientDeposit } from "@/types/client";
+import {
+  closeBankDayDeposits,
+  closeBankMonthDeposits,
+  fetchClientDeposits,
+} from "@/services/clientDeposit";
 
 const headers = [
   {
@@ -19,6 +23,10 @@ const headers = [
   },
   {
     value: "startSum",
+    text: "startSum",
+  },
+  {
+    value: "startDate",
     text: "startDate",
   },
   {
@@ -42,14 +50,36 @@ export const useClientDeposits = (router: VueRouter) => {
     isClientDepositsLoading.value = false;
   });
 
-  const handleRowClick = (item: Client) => {
+  const handleRowClick = (item: ClientDeposit) => {
     router.push({
-      path: `/client/${item.id}`,
+      path: `/clientDeposit/${item.id}`,
     });
   };
 
-  const handleDeleteClient = async () => {
-    //
+  const closingBankDay: Ref<boolean> = ref(false);
+
+  const handleCloseBankDay = async () => {
+    closingBankDay.value = true;
+
+    const { data } = await closeBankDayDeposits();
+
+    console.log(data);
+    if (data) {
+      closingBankDay.value = false;
+    }
+  };
+
+  const closingBankMonth: Ref<boolean> = ref(false);
+
+  const handleCloseBankMonth = async () => {
+    closingBankMonth.value = true;
+
+    const { data } = await closeBankMonthDeposits();
+
+    console.log(data);
+    if (data) {
+      closingBankMonth.value = false;
+    }
   };
 
   return {
@@ -58,6 +88,9 @@ export const useClientDeposits = (router: VueRouter) => {
     headers,
     formatDateSimple,
     handleRowClick,
-    handleDeleteClient,
+    handleCloseBankDay,
+    closingBankDay,
+    closingBankMonth,
+    handleCloseBankMonth,
   };
 };
