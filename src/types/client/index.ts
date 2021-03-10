@@ -43,3 +43,36 @@ export interface Client {
   maritalStatusId: number | Nullable;
   [key: string]: string | number | Nullable | boolean;
 }
+
+export interface Bill {
+  id: number;
+  account: string;
+  debit: number;
+  credit: number;
+  balance: number;
+  isActiveBill: boolean;
+  clientId: string | null;
+  isClosed: boolean;
+}
+
+export interface Deposit {
+  id: number;
+  isRevocable: boolean;
+  percent: number;
+  termInMs: number;
+  minSum: number;
+  currency: Option;
+}
+
+export interface ClientDeposit {
+  id: number;
+  client: Client;
+  clientId: string;
+  deposit: Deposit;
+  depositId: number;
+  startDate: string;
+  startSum: number;
+  isClosed: boolean;
+  mainBill: Bill;
+  percentBill: Bill;
+}

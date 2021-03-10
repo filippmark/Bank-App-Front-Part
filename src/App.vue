@@ -5,6 +5,9 @@
 
       <VSpacer></VSpacer>
       <VBtn color="green" to="/"> Клиенты </VBtn>
+      <VBtn color="green" to="/deposits"> Депозиты </VBtn>
+      <VBtn color="green" to="/bills"> Счета </VBtn>
+      <VBtn color="green" to="/clientDeposits"> Депозиты клиентов </VBtn>
     </VAppBar>
 
     <VMain>
