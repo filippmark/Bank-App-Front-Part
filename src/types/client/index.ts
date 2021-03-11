@@ -98,3 +98,8 @@ export interface Credit {
   maxSum: number;
   currency: Option;
 }
+
+export interface PaymentPlan {
+  paymentDate: string;
+  paymentPerMonth: number;
+}

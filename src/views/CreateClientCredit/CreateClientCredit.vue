@@ -42,9 +42,9 @@
           <VCol cols="12" md="4">
             <v-currency-field
               v-model.number="creditSum"
-              :suffix="deposit.currency.name"
+              :suffix="credit.currency.name"
               :rules="[isCreditSumLowerThanMaxSum]"
-              label="Сумма депозита"
+              label="Сумма кредита"
               :disabled="isInCreatedCredit"
             ></v-currency-field>
           </VCol>
@@ -159,7 +159,7 @@
               :disabled="clientCredit.isClosed"
               :loading="depositClosing"
               color="primary"
-              @click="handleCloseDeposit"
+              @click="handleCloseCredit"
             >
               {{ !clientCredit.isClosed ? "Закрыть кредит" : "Кредит закрыт" }}
             </VBtn>
@@ -167,9 +167,9 @@
               :disabled="clientCredit.isClosed"
               color="primary"
               :loading="percentReceiveing"
-              @click="handleGetEarnedPercents"
+              @click="handlePayEarnedPercents"
             >
-              Получить проценты по счету
+              Заплатить проценты по счету
             </VBtn>
           </template>
           <template v-else>
@@ -177,12 +177,30 @@
               color="primary"
               :loading="clientDepositCreating"
               :disabled="!isFormValid || isInCreatedCredit"
-              @click="hanleCreateClientDeposit"
+              @click="hanleCreateClientCredit"
             >
               Создать
             </VBtn>
           </template>
         </VCardActions>
+        <VRow v-if="plan.length">
+          <VSimpleTable>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">Date</th>
+                  <th class="text-left">Payment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in plan" :key="item.paymentDate">
+                  <td>{{ item.paymentDate }}</td>
+                  <td>{{ item.paymentPerMonth }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </VSimpleTable>
+        </VRow>
       </VCard>
     </VRow>
   </VForm>
@@ -210,12 +228,13 @@ export default defineComponent({
       isInCreatedCredit,
       mainBill,
       percentBill,
-      handleGetEarnedPercents,
+      handlePayEarnedPercents,
       percentReceiveing,
       creditClosing,
-      handleCloseDeposit,
+      handleCloseCredit,
       clientCredit,
       UPDATE_ERROR_MESSAGE,
+      plan,
     } = useClientDepositForm(router, route);
 
     return {
@@ -234,12 +253,13 @@ export default defineComponent({
       isInCreatedCredit,
       mainBill,
       percentBill,
-      handleGetEarnedPercents,
+      handlePayEarnedPercents,
       percentReceiveing,
       creditClosing,
-      handleCloseDeposit,
+      handleCloseCredit,
       clientCredit,
       UPDATE_ERROR_MESSAGE,
+      plan,
     };
   },
 });

@@ -8,6 +8,7 @@ import ClientDeposits from "@/views/ClientDeposits/ClientDeposits.vue";
 import CreateClientDeposit from "@/views/CreateCllientDeposit/CreateClientDeposit.vue";
 import Credit from "@/views/Credit/Credit.vue";
 import CreateClientCredit from "@/views/CreateClientCredit/CreateClientCredit.vue";
+import ClientCredits from "@/views/ClientC/ClientCredits.vue";
 
 Vue.use(VueRouter);
 
@@ -66,6 +67,11 @@ const routes: Array<RouteConfig> = [
     path: "/clientCredit/:id",
     name: "clientCreditInfo",
     component: CreateClientCredit,
+  },
+  {
+    path: "/clientCredits",
+    name: "clientCredits",
+    component: ClientCredits,
   },
 ];
 

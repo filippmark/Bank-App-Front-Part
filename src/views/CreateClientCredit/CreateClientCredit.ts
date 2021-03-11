@@ -4,11 +4,17 @@ import { useStore } from "@/uses/useStore";
 import { onUnmounted, ref, Ref, onMounted } from "@vue/composition-api";
 import { Actions, States } from "@/store/modules/client/types";
 import VueRouter, { Route } from "vue-router";
-import { Bill, ClientCredit, Credit } from "@/types/client";
+import { Bill, ClientCredit, Credit, PaymentPlan } from "@/types/client";
 import { Nullable } from "@/types/global";
 import { Mutations } from "@/store/modules/error/types";
 import { fetchCreditById } from "@/services/credit";
-import { createClientCredit, fetchClientCredit } from "@/services/clientCredit";
+import {
+  closeCredit,
+  createClientCredit,
+  fetchClientCredit,
+  fetchClientCreditPlan,
+  payPercentsCredit,
+} from "@/services/clientCredit";
 
 const { useState, useActions } = useStore(Modules.CLIENT);
 
@@ -24,6 +30,7 @@ export const useClientDepositForm = (router: VueRouter, route: Route) => {
   const mainBill: Ref<Bill | Nullable> = ref(null);
   const percentBill: Ref<Bill | Nullable> = ref(null);
   const clientCredit: Ref<ClientCredit | Nullable> = ref(null);
+  const plan: Ref<PaymentPlan[]> = ref([]);
 
   const { clients, isClientLoading } = useState([
     States.clients,
@@ -49,6 +56,14 @@ export const useClientDepositForm = (router: VueRouter, route: Route) => {
       if (data) {
         updateFields(data);
       }
+
+      const { data: paymentPlan } = await fetchClientCreditPlan(
+        parseInt(route.params.id, 10)
+      );
+
+      if (paymentPlan) {
+        plan.value = paymentPlan;
+      }
     } else {
       const { data } = await fetchCreditById(parseInt(route.params.id, 10));
       credit.value = data;
@@ -65,7 +80,9 @@ export const useClientDepositForm = (router: VueRouter, route: Route) => {
 
   const isCreditSumLowerThanMaxSum = () => {
     if (credit.value) {
-      return credit.value.maxSum >= creditSum.value || "введите меньшую сумму";
+      const isValidValue =
+        creditSum.value > 0 && credit.value.maxSum >= creditSum.value;
+      return isValidValue || "введите другую сумму";
     }
     return "";
   };
@@ -98,42 +115,40 @@ export const useClientDepositForm = (router: VueRouter, route: Route) => {
     Mutations.UPDATE_ERROR_MESSAGE,
   ]);
 
-  const handleGetEarnedPercents = async () => {
+  const handlePayEarnedPercents = async () => {
     //
-    if (credit.value) {
+    if (clientCredit.value) {
       percentReceiveing.value = true;
 
-      //   const { data, error } = await getPercentsClientDeposit(
-      //     clientDeposit.value.id
-      //   );
+      const { data, error } = await payPercentsCredit(clientCredit.value.id);
 
-      //   console.log(data, error);
-      //   if (data) {
-      //     updateFields(data);
-      //   }
-      //   if (error) {
-      //     UPDATE_ERROR_MESSAGE([error.response.data.message]);
-      //   }
+      console.log(data, error);
+      if (data) {
+        updateFields(data);
+      }
+      if (error) {
+        UPDATE_ERROR_MESSAGE([error.response.data.message]);
+      }
       percentReceiveing.value = false;
     }
   };
 
   const creditClosing: Ref<boolean> = ref(false);
 
-  const handleCloseDeposit = async () => {
+  const handleCloseCredit = async () => {
     //
     if (clientCredit.value) {
       creditClosing.value = true;
 
-      //   const { data, error } = await closeClientDeposit(clientDeposit.value.id);
+      const { data, error } = await closeCredit(clientCredit.value.id);
 
-      //   console.log(data, error);
-      //   if (data) {
-      //     updateFields(data);
-      //   }
-      //   if (error) {
-      //     UPDATE_ERROR_MESSAGE([error.response.data.message]);
-      //   }
+      console.log(data, error);
+      if (data) {
+        updateFields(data);
+      }
+      if (error) {
+        UPDATE_ERROR_MESSAGE([error.response.data.message]);
+      }
 
       creditClosing.value = false;
     }
@@ -155,11 +170,12 @@ export const useClientDepositForm = (router: VueRouter, route: Route) => {
     isInCreatedCredit,
     mainBill,
     percentBill,
-    handleGetEarnedPercents,
+    handlePayEarnedPercents,
     percentReceiveing,
     creditClosing,
-    handleCloseDeposit,
+    handleCloseCredit,
     clientCredit,
     UPDATE_ERROR_MESSAGE,
+    plan,
   };
 };
